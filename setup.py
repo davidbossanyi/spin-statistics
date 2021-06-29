@@ -22,7 +22,7 @@ VERSION = None
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'numpy', 'moatplotlib', 'scipy', 'pandas',
+    'numpy', 'matplotlib', 'scipy', 'pandas',
 ]
 
 # What packages are optional?
