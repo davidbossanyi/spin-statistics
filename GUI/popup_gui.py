@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_popup(object):
     def setupUi(self, popup):
         popup.setObjectName("popup")
-        popup.resize(393, 402)
+        popup.resize(399, 388)
         self.picture = QtWidgets.QLabel(popup)
-        self.picture.setGeometry(QtCore.QRect(10, 10, 371, 381))
+        self.picture.setGeometry(QtCore.QRect(10, 10, 379, 365))
         self.picture.setText("")
         self.picture.setObjectName("picture")
 

@@ -31,7 +31,7 @@ class Popup(QtWidgets.QWidget):
         self.ui = PopUpWindow()
         self.ui.setupUi(self)
         self.setWindowIcon(QtGui.QIcon('icon.png'))
-        self.ui.picture.setPixmap(QtGui.QPixmap('icon.png'))
+        self.ui.picture.setPixmap(QtGui.QPixmap('rate_model.png'))
 
 
 class Application(QtWidgets.QMainWindow):
