@@ -1,0 +1,25 @@
+xvar,xmin,xmax,log,obj,str,factor,ui
+J,0.1,1000,1,S,J,1.00E-06,valueJ
+D,0.01,100,1,S,D,1.00E-06,valueD
+E,0.01,100,1,S,E,1.00E-06,valueE
+X,0.01,100,1,S,X,1.00E-09,valueX
+B,0,300,0,S,B,0.001,valueB
+theta,0,360,0,S,theta,0.017453293,sliderTheta
+phi,0,360,0,S,phi,0.017453293,sliderPhi
+alpha,0,360,0,S,alpha,0.017453293,sliderAlpha
+beta,0,360,0,S,beta,0.017453293,sliderBeta
+gamma,0,360,0,S,gamma,0.017453293,sliderGamma
+T,0,1000,0,M,gaplaw_kT,8.62E-05,valueT
+T1 energy,1,2,0,I,ET1,1,valueET1
+T2 energy,1.5,3,0,I,ET2,1,valueET2
+kS,0.000625,6.25,1,M,kS,1,valueKS
+kD,0.001,10,1,M,kD,1,valueKD
+kTTA,0.01,100,1,M,kTTA,1,valueKTTA
+kSF,1,10000,1,M,kSF,1,valueKSF
+k_SF,1,10000,1,M,k_SF,1,valueK_SF
+kTS,0.1,1000,1,M,kTS,1,valueKTS
+kTF,0.5,5000,1,M,kTF,1,valueKTF
+kRISC,50,500000,1,M,kRISC,1,valueKRISC
+kIC1,0.17,1700,1,M,kIC1,1,valueKIC1
+kIC2,0.12,1200,1,M,kIC2,1,valueKIC2
+kIC21,0.08,800,1,M,kIC21,1,valueKIC21
