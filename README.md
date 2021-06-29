@@ -1,7 +1,7 @@
 # spin-statistics
 Calculations of spin-statistical factors for triplet-triplet annihilation upconversion.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/davidbossanyi/spin-statistics/main?filepath=https%3A%2F%2Fgithub.com%2Fdavidbossanyi%2Fspin-statistics%2Fblob%2Fmain%2Fnotebooks%2Fspin-statistics.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/davidbossanyi/spin-statistics/0b72942209d8d2a895c619287da9095e50f39c33)
 
 ## about
 The spin-statistical factor &eta; for triplet-triplet annihilation upconversion gives the probability that an annihilation event between two triplet excitons will result in a singlet exciton. The value &eta; depends in a non-trivial way on a lot of different parameters. For the full story, please refer to [our paper recently uploaded to ChemRxiv](https://chemrxiv.org/engage/chemrxiv/article-details/60dae5946bdaa41e623d4a33). This repository contains code that allows you to perform calculations of &eta;.
