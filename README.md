@@ -22,7 +22,12 @@ from spinstats.models import Model2 as Model
 #### examples
 The examples folder contains several scripts that illustrate how to use spinstats as a python package.
 #### documentation
-Documentation is provided in the docs folder. To view the docs, open docs/build/html/index.html in your browser.
+Documentation is provided in the docs folder. To view the docs, open `doc/build/html/index.html` in your browser. Alternatively, you can build the documentation from source by running
+```sh
+cd doc
+make html
+```
+which requires you to have [sphinx](https://www.sphinx-doc.org/en/master/) installed.
 
 ## jupyter notebook
 The code can also be accessed through the jupyter notebook contained in the notebooks folder. You can interact with the code directly by launching the notebook in binder using the badge at the top of this page.

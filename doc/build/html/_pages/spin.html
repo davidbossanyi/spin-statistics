@@ -1,0 +1,511 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Spin Hamiltonian &#8212; spin-statistics  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Molecular Orientations" href="orientations.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="orientations.html" title="Molecular Orientations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">spin-statistics  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Spin Hamiltonian</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="spin-hamiltonian">
+<h1>Spin Hamiltonian<a class="headerlink" href="#spin-hamiltonian" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The Hamiltonian is the sum of the Zeeman, zero-field, intertriplet dipole-dipole and intertriplet exchange terms.</p>
+<p>For details, refer to <a class="reference external" href="https://doi.org/10.1021/acs.jpcc.6b04934">this paper</a>.</p>
+<p>The class uses:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hbar=1\)</span></p></li>
+<li><p>Tesla for magnetic field strength</p></li>
+<li><p>electronvolts for energies</p></li>
+<li><p>radians for angles</p></li>
+<li><p>ZX’Z’’ convention for Euler angles</p></li>
+<li><p>the molecular system of molecule A throughout, which takes the x-axis parallel to the long molecular axis, the y-axis parallel to the short molecular axis and the z-axis perpendicular to the plane of the molecular backbone</p></li>
+</ul>
+<p>The zero-field basis is used for the construction of the Hamiltonian:</p>
+<div class="math notranslate nohighlight">
+\[\{|\phi_i\rangle\}=\{|xx\rangle, |xy\rangle, |xz\rangle, |yx\rangle, |yy\rangle, |yz\rangle, |zx\rangle, |zy\rangle, |zz\rangle\}\]</div>
+<p>The <a class="reference internal" href="#spinstats.SpinHamiltonian" title="spinstats.SpinHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">spinstats.SpinHamiltonian</span></code></a> can be used to compute the total spin Hamiltonian, its eigenvectors and eigenvalues and the overlap factors that are required for further simulations. See the examples for usage.</p>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">spinstats.</span></span><span class="sig-name descname"><span class="pre">SpinHamiltonian</span></span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for calculating and using the spin Hamiltonian for (T..T) states.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.mu_B">
+<span class="sig-name descname"><span class="pre">mu_B</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.mu_B" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the Bohr magneton in eV. Default is 5.788e-5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.g">
+<span class="sig-name descname"><span class="pre">g</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.g" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electron g-factor. Default is 2.002.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.J">
+<span class="sig-name descname"><span class="pre">J</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.J" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the intertriplet exchange energy in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">D,</span> <span class="pre">E</span></span></dt>
+<dd><p>Values of the intratriplet zero-field splitting parameters in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.X">
+<span class="sig-name descname"><span class="pre">X</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.X" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the intertriplet dipole-dipole coupling strength in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.rAB">
+<span class="sig-name descname"><span class="pre">rAB</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.rAB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centre-of-mass vector (x, y, z) between the two molecules comprising the triplet-pair. Must be given in the molecular coordinate system of molecule A.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>3-tuple of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">alpha,</span> <span class="pre">beta,</span> <span class="pre">gamma</span></span></dt>
+<dd><p>Euler angles <span class="math notranslate nohighlight">\(\alpha, \beta, \gamma\)</span> that would rotate molecule A onto molecule B using the ZX’Z’’ convention, in radians. Must be calculated in the molecular coordinate system of molecule A.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">theta,</span> <span class="pre">phi</span></span></dt>
+<dd><p>Spherical polar angles <span class="math notranslate nohighlight">\(\theta, \phi\)</span> defining the orientation of the magnetic field in the molecular coordinate system of molecule A.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.B">
+<span class="sig-name descname"><span class="pre">B</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.B" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the external magnetic field strength in Tesla.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.H">
+<span class="sig-name descname"><span class="pre">H</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.H" title="Permalink to this definition">¶</a></dt>
+<dd><p>The computed Hamiltonian matrix (9x9).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.eigenvalues">
+<span class="sig-name descname"><span class="pre">eigenvalues</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.eigenvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the computed eigenvalues (the energies of the 9 (T..T) states).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.eigenvectors">
+<span class="sig-name descname"><span class="pre">eigenvectors</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.eigenvectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>The computed eigenvectors (columns).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.cslsq">
+<span class="sig-name descname"><span class="pre">cslsq</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.cslsq" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the squared overlap factors between the 9 eigenstates and the spin-0 triplet pair state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.ctlsq_m">
+<span class="sig-name descname"><span class="pre">ctlsq_m</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.ctlsq_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the squared overlap factors between the 9 eigenstates and the spin-1 triplet pair state with m as x, y or z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.sum_ctlsq">
+<span class="sig-name descname"><span class="pre">sum_ctlsq</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.sum_ctlsq" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the total squared overlap factors between the 9 eigenstates and the 3 spin-1 triplet pair states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.cqlsq_m">
+<span class="sig-name descname"><span class="pre">cqlsq_m</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.cqlsq_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the squared overlap factors between the 9 eigenstates and the spin-2 triplet pair state with m as a, b, x, y or z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.sum_cqlsq">
+<span class="sig-name descname"><span class="pre">sum_cqlsq</span></span><a class="headerlink" href="#spinstats.SpinHamiltonian.sum_cqlsq" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the total squared overlap factors between the 9 eigenstates and the 5 spin-2 triplet pair states.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_cslsq">
+<span class="sig-name descname"><span class="pre">calculate_cslsq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_cslsq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_cslsq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the singlet overlaps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_dipoledipole_hamiltonian">
+<span class="sig-name descname"><span class="pre">calculate_dipoledipole_hamiltonian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_dipoledipole_hamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_dipoledipole_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the zintertriplet dipole-dipole Hamiltonian.</p>
+<p class="rubric">Notes</p>
+<p>Depends on rAB only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_eigenstates">
+<span class="sig-name descname"><span class="pre">calculate_eigenstates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_eigenstates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_eigenstates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the eigenvalues and eigenstates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_everything">
+<span class="sig-name descname"><span class="pre">calculate_everything</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_everything"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_everything" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Hamiltonian, eigenstates, eigenvalues and overlaps all at the same time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_exchange_hamiltonian">
+<span class="sig-name descname"><span class="pre">calculate_exchange_hamiltonian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_exchange_hamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_exchange_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the exchange Hamiltonian.</p>
+<p class="rubric">Notes</p>
+<p>Independent of any parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_hamiltonian">
+<span class="sig-name descname"><span class="pre">calculate_hamiltonian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_hamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the total spin Hamiltonian.</p>
+<p class="rubric">Notes</p>
+<p>All the constituent parts must be calculated first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_total_cqlsq">
+<span class="sig-name descname"><span class="pre">calculate_total_cqlsq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_total_cqlsq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_total_cqlsq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the total of the quintet overlaps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_total_ctlsq">
+<span class="sig-name descname"><span class="pre">calculate_total_ctlsq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_total_ctlsq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_total_ctlsq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the total of the triplet overlaps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_zeeman_hamiltonian">
+<span class="sig-name descname"><span class="pre">calculate_zeeman_hamiltonian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_zeeman_hamiltonian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_zeeman_hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Zeeman Hamiltonian.</p>
+<p class="rubric">Notes</p>
+<p>Depends on theta and phi only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_zerofield_hamiltonian_molecule_A">
+<span class="sig-name descname"><span class="pre">calculate_zerofield_hamiltonian_molecule_A</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_zerofield_hamiltonian_molecule_A"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_zerofield_hamiltonian_molecule_A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the zero-field Hamiltonian for molecule A.</p>
+<p class="rubric">Notes</p>
+<p>Depends on D and E only.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_zerofield_hamiltonian_molecule_B">
+<span class="sig-name descname"><span class="pre">calculate_zerofield_hamiltonian_molecule_B</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_zerofield_hamiltonian_molecule_B"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_zerofield_hamiltonian_molecule_B" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the zero-field Hamiltonian for molecule B.</p>
+<p class="rubric">Notes</p>
+<p>Depends on alpha, beta and gamma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.SpinHamiltonian.calculate_zerofield_hamiltonian_single_molecule">
+<span class="sig-name descname"><span class="pre">calculate_zerofield_hamiltonian_single_molecule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/spinhamiltonian.html#SpinHamiltonian.calculate_zerofield_hamiltonian_single_molecule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.SpinHamiltonian.calculate_zerofield_hamiltonian_single_molecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the zero-field Hamiltonian for a single molecule.</p>
+<p class="rubric">Notes</p>
+<p>Depends on D and E only.</p>
+<p>This is a precursor for calculating the zero-field Hamiltonian of molecule B.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Spin Hamiltonian</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="orientations.html"
+                        title="next chapter">Molecular Orientations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_pages/spin.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="orientations.html" title="Molecular Orientations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">spin-statistics  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Spin Hamiltonian</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, David Bossanyi.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Models &#8212; spin-statistics  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Molecular Orientations" href="orientations.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="orientations.html" title="Molecular Orientations"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">spin-statistics  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Models</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="models">
+<h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The rate model is a set of coupled, linear differential equations. The model classes contain methods for solving these equations in the steady state using matrix methods. Model2 is the recommended model. See the examples for usage.</p>
+</section>
+<section id="api-documentation">
+<h2>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="spinstats.models.Model2">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">spinstats.models.</span></span><span class="sig-name descname"><span class="pre">Model2</span></span><a class="reference internal" href="../_modules/spinstats/models.html#Model2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model2" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for performing calculations of the spin-statistical factor.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.states">
+<span class="sig-name descname"><span class="pre">states</span></span><a class="headerlink" href="#spinstats.models.Model2.states" title="Permalink to this definition">¶</a></dt>
+<dd><p>The names of the excited state species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.rates">
+<span class="sig-name descname"><span class="pre">rates</span></span><a class="headerlink" href="#spinstats.models.Model2.rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>The names of the different rate constants in the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><a class="headerlink" href="#spinstats.models.Model2.model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.initial_weighting">
+<span class="sig-name descname"><span class="pre">initial_weighting</span></span><a class="headerlink" href="#spinstats.models.Model2.initial_weighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of (str, float) pairs. Key is the state name (str) and value is its initial weight (float).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.gaplaw_A">
+<span class="sig-name descname"><span class="pre">gaplaw_A</span></span><a class="headerlink" href="#spinstats.models.Model2.gaplaw_A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Energy gap law prefactor in unts of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.gaplaw_gamma">
+<span class="sig-name descname"><span class="pre">gaplaw_gamma</span></span><a class="headerlink" href="#spinstats.models.Model2.gaplaw_gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material dependent gamma factor from the energy gap law.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.gaplaw_Evib">
+<span class="sig-name descname"><span class="pre">gaplaw_Evib</span></span><a class="headerlink" href="#spinstats.models.Model2.gaplaw_Evib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vibrational energy to use in the energy gap law in units of eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.gaplaw_kT">
+<span class="sig-name descname"><span class="pre">gaplaw_kT</span></span><a class="headerlink" href="#spinstats.models.Model2.gaplaw_kT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thermal energy for internal conversion calculations in units of eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.G">
+<span class="sig-name descname"><span class="pre">G</span></span><a class="headerlink" href="#spinstats.models.Model2.G" title="Permalink to this definition">¶</a></dt>
+<dd><p>The exciton generation rate for <code class="xref py py-attr docutils literal notranslate"><span class="pre">initial_state</span></code>. Units of per volume per time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kD">
+<span class="sig-name descname"><span class="pre">kD</span></span><a class="headerlink" href="#spinstats.models.Model2.kD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of triplet-pair dissociation into free triplets. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kTTA">
+<span class="sig-name descname"><span class="pre">kTTA</span></span><a class="headerlink" href="#spinstats.models.Model2.kTTA" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Arbitrary) effective linear rate of triplet-triplet annihilation . UNits of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kIC1">
+<span class="sig-name descname"><span class="pre">kIC1</span></span><a class="headerlink" href="#spinstats.models.Model2.kIC1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of internal conversion from <span class="math notranslate nohighlight">\(^3(TT)\)</span> to <span class="math notranslate nohighlight">\(T_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kIC2">
+<span class="sig-name descname"><span class="pre">kIC2</span></span><a class="headerlink" href="#spinstats.models.Model2.kIC2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of internal conversion from <span class="math notranslate nohighlight">\(^3(TT)\)</span> to <span class="math notranslate nohighlight">\(T_2\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kIC21">
+<span class="sig-name descname"><span class="pre">kIC21</span></span><a class="headerlink" href="#spinstats.models.Model2.kIC21" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of internal conversion from <span class="math notranslate nohighlight">\(T_2\)</span> to <span class="math notranslate nohighlight">\(T_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kRISC">
+<span class="sig-name descname"><span class="pre">kRISC</span></span><a class="headerlink" href="#spinstats.models.Model2.kRISC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of high-level intersystem crossing from <span class="math notranslate nohighlight">\(T_2\)</span> to <span class="math notranslate nohighlight">\(S_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kTF">
+<span class="sig-name descname"><span class="pre">kTF</span></span><a class="headerlink" href="#spinstats.models.Model2.kTF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of triplet-pair fusion from weakly exchange-coupled to strongly exchange-coupled. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kTS">
+<span class="sig-name descname"><span class="pre">kTS</span></span><a class="headerlink" href="#spinstats.models.Model2.kTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of triplet-pair separation from strongly exchange-coupled to weakly exchange-coupled. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kSF">
+<span class="sig-name descname"><span class="pre">kSF</span></span><a class="headerlink" href="#spinstats.models.Model2.kSF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of singlet fission from <span class="math notranslate nohighlight">\(S_1\)</span> to <span class="math notranslate nohighlight">\(^1(TT)\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.k_SF">
+<span class="sig-name descname"><span class="pre">k_SF</span></span><a class="headerlink" href="#spinstats.models.Model2.k_SF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of triplet-pair fusion from <span class="math notranslate nohighlight">\(^1(TT)\)</span> to :math`S_1`. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kS">
+<span class="sig-name descname"><span class="pre">kS</span></span><a class="headerlink" href="#spinstats.models.Model2.kS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radiative rate of the <span class="math notranslate nohighlight">\(S_1\)</span> state. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.kT">
+<span class="sig-name descname"><span class="pre">kT</span></span><a class="headerlink" href="#spinstats.models.Model2.kT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nonradiative rate of the <span class="math notranslate nohighlight">\(T_1\)</span> state. Should be set to zero for true calculations of spin statistics. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.cs">
+<span class="sig-name descname"><span class="pre">cs</span></span><a class="headerlink" href="#spinstats.models.Model2.cs" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the overlap factors between the 9 <span class="math notranslate nohighlight">\((T..T)\)</span> states and <span class="math notranslate nohighlight">\(^1(TT)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.ct_m">
+<span class="sig-name descname"><span class="pre">ct_m</span></span><a class="headerlink" href="#spinstats.models.Model2.ct_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the overlap factors between the 9 <span class="math notranslate nohighlight">\((T..T)\)</span> states and <span class="math notranslate nohighlight">\(^3(TT)_m\)</span>, where m is x, y or z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.cq_m">
+<span class="sig-name descname"><span class="pre">cq_m</span></span><a class="headerlink" href="#spinstats.models.Model2.cq_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the overlap factors between the 9 <span class="math notranslate nohighlight">\((T..T)\)</span> states and <span class="math notranslate nohighlight">\(^5(TT)_m\)</span>, where m is a, b, x, y or z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.simulation_results">
+<span class="sig-name descname"><span class="pre">simulation_results</span></span><a class="headerlink" href="#spinstats.models.Model2.simulation_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produced by <a class="reference internal" href="#spinstats.models.Model2.simulate" title="spinstats.models.Model2.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simulate()</span></code></a>. Keys are the excited-state names (str), values are the simulated populations (float).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.plqy">
+<span class="sig-name descname"><span class="pre">plqy</span></span><a class="headerlink" href="#spinstats.models.Model2.plqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated photoluminescence quantum yield from <a class="reference internal" href="#spinstats.models.Model2.calculate_plqy" title="spinstats.models.Model2.calculate_plqy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_plqy()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.ucqy">
+<span class="sig-name descname"><span class="pre">ucqy</span></span><a class="headerlink" href="#spinstats.models.Model2.ucqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated upconversion quantum yield from <a class="reference internal" href="#spinstats.models.Model2.calculate_ucqy" title="spinstats.models.Model2.calculate_ucqy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_ucqy()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model2.eta">
+<span class="sig-name descname"><span class="pre">eta</span></span><a class="headerlink" href="#spinstats.models.Model2.eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated spin-statistical factor from <a class="reference internal" href="#spinstats.models.Model2.calculate_eta" title="spinstats.models.Model2.calculate_eta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_eta()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model2.calculate_eta">
+<span class="sig-name descname"><span class="pre">calculate_eta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model2.calculate_eta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model2.calculate_eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the spin-statistical factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model2.calculate_internal_conversion_rate">
+<span class="sig-name descname"><span class="pre">calculate_internal_conversion_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deltaE</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spinstats.models.Model2.calculate_internal_conversion_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an internal conversion rate based on the energy gap law.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deltaE</strong> (<em>float</em>) – Energy gap between the initial and final state. Positive if the final state is higher in energy.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>kIC</strong> – Internal conversion rate in unts of per ns.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model2.calculate_plqy">
+<span class="sig-name descname"><span class="pre">calculate_plqy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model2.calculate_plqy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model2.calculate_plqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the photoluminescence quantum yield.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model2.calculate_ucqy">
+<span class="sig-name descname"><span class="pre">calculate_ucqy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model2.calculate_ucqy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model2.calculate_ucqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the upconversion quantum yield.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model2.set_spinhamiltonian_parameters">
+<span class="sig-name descname"><span class="pre">set_spinhamiltonian_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spinhamiltonian</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spinstats.models.Model2.set_spinhamiltonian_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import calculated overlaps from the spin Hamiltonian</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spinhamiltonian</strong> (<a class="reference internal" href="spin.html#spinstats.SpinHamiltonian" title="spinstats.SpinHamiltonian"><em>spinstats.SpinHamiltonian</em></a>) – Instance of <a class="reference internal" href="spin.html#spinstats.SpinHamiltonian" title="spinstats.SpinHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">spinstats.SpinHamiltonian</span></code></a>, with parameters already computed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model2.simulate">
+<span class="sig-name descname"><span class="pre">simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model2.simulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model2.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the excited state populations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="spinstats.models.Model1">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">spinstats.models.</span></span><span class="sig-name descname"><span class="pre">Model1</span></span><a class="reference internal" href="../_modules/spinstats/models.html#Model1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model1" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for performing calculations of the spin-statistical factor.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.states">
+<span class="sig-name descname"><span class="pre">states</span></span><a class="headerlink" href="#spinstats.models.Model1.states" title="Permalink to this definition">¶</a></dt>
+<dd><p>The names of the excited state species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.rates">
+<span class="sig-name descname"><span class="pre">rates</span></span><a class="headerlink" href="#spinstats.models.Model1.rates" title="Permalink to this definition">¶</a></dt>
+<dd><p>The names of the different rate constants in the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.model_name">
+<span class="sig-name descname"><span class="pre">model_name</span></span><a class="headerlink" href="#spinstats.models.Model1.model_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.initial_weighting">
+<span class="sig-name descname"><span class="pre">initial_weighting</span></span><a class="headerlink" href="#spinstats.models.Model1.initial_weighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of (str, float) pairs. Key is the state name (str) and value is its initial weight (float).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.gaplaw_A">
+<span class="sig-name descname"><span class="pre">gaplaw_A</span></span><a class="headerlink" href="#spinstats.models.Model1.gaplaw_A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Energy gap law prefactor in unts of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.gaplaw_gamma">
+<span class="sig-name descname"><span class="pre">gaplaw_gamma</span></span><a class="headerlink" href="#spinstats.models.Model1.gaplaw_gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Material dependent gamma factor from the energy gap law.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.gaplaw_Evib">
+<span class="sig-name descname"><span class="pre">gaplaw_Evib</span></span><a class="headerlink" href="#spinstats.models.Model1.gaplaw_Evib" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vibrational energy to use in the energy gap law in units of eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.gaplaw_kT">
+<span class="sig-name descname"><span class="pre">gaplaw_kT</span></span><a class="headerlink" href="#spinstats.models.Model1.gaplaw_kT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thermal energy for internal conversion calculations in units of eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.G">
+<span class="sig-name descname"><span class="pre">G</span></span><a class="headerlink" href="#spinstats.models.Model1.G" title="Permalink to this definition">¶</a></dt>
+<dd><p>The exciton generation rate for <code class="xref py py-attr docutils literal notranslate"><span class="pre">initial_state</span></code>. Units of per volume per time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kD">
+<span class="sig-name descname"><span class="pre">kD</span></span><a class="headerlink" href="#spinstats.models.Model1.kD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of triplet-pair dissociation into free triplets. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kTTA">
+<span class="sig-name descname"><span class="pre">kTTA</span></span><a class="headerlink" href="#spinstats.models.Model1.kTTA" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Arbitrary) effective linear rate of triplet-triplet annihilation . UNits of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kIC1">
+<span class="sig-name descname"><span class="pre">kIC1</span></span><a class="headerlink" href="#spinstats.models.Model1.kIC1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of internal conversion from <span class="math notranslate nohighlight">\(^3(TT)\)</span> to <span class="math notranslate nohighlight">\(T_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kIC2">
+<span class="sig-name descname"><span class="pre">kIC2</span></span><a class="headerlink" href="#spinstats.models.Model1.kIC2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of internal conversion from <span class="math notranslate nohighlight">\(^3(TT)\)</span> to <span class="math notranslate nohighlight">\(T_2\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kIC21">
+<span class="sig-name descname"><span class="pre">kIC21</span></span><a class="headerlink" href="#spinstats.models.Model1.kIC21" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of internal conversion from <span class="math notranslate nohighlight">\(T_2\)</span> to <span class="math notranslate nohighlight">\(T_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kRISC">
+<span class="sig-name descname"><span class="pre">kRISC</span></span><a class="headerlink" href="#spinstats.models.Model1.kRISC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of high-level intersystem crossing from <span class="math notranslate nohighlight">\(T_2\)</span> to <span class="math notranslate nohighlight">\(S_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kTF">
+<span class="sig-name descname"><span class="pre">kTF</span></span><a class="headerlink" href="#spinstats.models.Model1.kTF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of triplet-pair fusion to form <span class="math notranslate nohighlight">\(S_1\)</span>. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kSF">
+<span class="sig-name descname"><span class="pre">kSF</span></span><a class="headerlink" href="#spinstats.models.Model1.kSF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rate of singlet fission from <span class="math notranslate nohighlight">\(S_1\)</span> to triplet-pair states. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kS">
+<span class="sig-name descname"><span class="pre">kS</span></span><a class="headerlink" href="#spinstats.models.Model1.kS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Radiative rate of the <span class="math notranslate nohighlight">\(S_1\)</span> state. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.kT">
+<span class="sig-name descname"><span class="pre">kT</span></span><a class="headerlink" href="#spinstats.models.Model1.kT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nonradiative rate of the <span class="math notranslate nohighlight">\(T_1\)</span> state. Should be set to zero for true calculations of spin statistics. Units of per ns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.cs">
+<span class="sig-name descname"><span class="pre">cs</span></span><a class="headerlink" href="#spinstats.models.Model1.cs" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the overlap factors between the 9 <span class="math notranslate nohighlight">\((T..T)\)</span> states and <span class="math notranslate nohighlight">\(^1(TT)\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.ct_m">
+<span class="sig-name descname"><span class="pre">ct_m</span></span><a class="headerlink" href="#spinstats.models.Model1.ct_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the overlap factors between the 9 <span class="math notranslate nohighlight">\((T..T)\)</span> states and <span class="math notranslate nohighlight">\(^3(TT)_m\)</span>, where m is x, y or z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.cq_m">
+<span class="sig-name descname"><span class="pre">cq_m</span></span><a class="headerlink" href="#spinstats.models.Model1.cq_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>1D array containing the overlap factors between the 9 <span class="math notranslate nohighlight">\((T..T)\)</span> states and <span class="math notranslate nohighlight">\(^5(TT)_m\)</span>, where m is a, b, x, y or z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.simulation_results">
+<span class="sig-name descname"><span class="pre">simulation_results</span></span><a class="headerlink" href="#spinstats.models.Model1.simulation_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produced by <a class="reference internal" href="#spinstats.models.Model1.simulate" title="spinstats.models.Model1.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simulate()</span></code></a>. Keys are the excited-state names (str), values are the simulated populations (float).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.plqy">
+<span class="sig-name descname"><span class="pre">plqy</span></span><a class="headerlink" href="#spinstats.models.Model1.plqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated photoluminescence quantum yield from <a class="reference internal" href="#spinstats.models.Model1.calculate_plqy" title="spinstats.models.Model1.calculate_plqy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_plqy()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.ucqy">
+<span class="sig-name descname"><span class="pre">ucqy</span></span><a class="headerlink" href="#spinstats.models.Model1.ucqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated upconversion quantum yield from <a class="reference internal" href="#spinstats.models.Model1.calculate_ucqy" title="spinstats.models.Model1.calculate_ucqy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_ucqy()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="spinstats.models.Model1.eta">
+<span class="sig-name descname"><span class="pre">eta</span></span><a class="headerlink" href="#spinstats.models.Model1.eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated spin-statistical factor from <a class="reference internal" href="#spinstats.models.Model1.calculate_eta" title="spinstats.models.Model1.calculate_eta"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calculate_eta()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model1.calculate_eta">
+<span class="sig-name descname"><span class="pre">calculate_eta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model1.calculate_eta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model1.calculate_eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the spin-statistical factor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model1.calculate_internal_conversion_rate">
+<span class="sig-name descname"><span class="pre">calculate_internal_conversion_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deltaE</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spinstats.models.Model1.calculate_internal_conversion_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an internal conversion rate based on the energy gap law.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deltaE</strong> (<em>float</em>) – Energy gap between the initial and final state. Positive if the final state is higher in energy.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>kIC</strong> – Internal conversion rate in unts of per ns.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model1.calculate_plqy">
+<span class="sig-name descname"><span class="pre">calculate_plqy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model1.calculate_plqy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model1.calculate_plqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the photoluminscence quantum yield.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model1.calculate_ucqy">
+<span class="sig-name descname"><span class="pre">calculate_ucqy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model1.calculate_ucqy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model1.calculate_ucqy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the upconversion quantum yield.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model1.set_spinhamiltonian_parameters">
+<span class="sig-name descname"><span class="pre">set_spinhamiltonian_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spinhamiltonian</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#spinstats.models.Model1.set_spinhamiltonian_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import calculated overlaps from the spin Hamiltonian</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spinhamiltonian</strong> (<a class="reference internal" href="spin.html#spinstats.SpinHamiltonian" title="spinstats.SpinHamiltonian"><em>spinstats.SpinHamiltonian</em></a>) – Instance of <a class="reference internal" href="spin.html#spinstats.SpinHamiltonian" title="spinstats.SpinHamiltonian"><code class="xref py py-class docutils literal notranslate"><span class="pre">spinstats.SpinHamiltonian</span></code></a>, with parameters already computed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="spinstats.models.Model1.simulate">
+<span class="sig-name descname"><span class="pre">simulate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/spinstats/models.html#Model1.simulate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#spinstats.models.Model1.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the excited state populations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Models</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#api-documentation">API Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="orientations.html"
+                        title="previous chapter">Molecular Orientations</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/_pages/models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="orientations.html" title="Molecular Orientations"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">spin-statistics  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Models</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, David Bossanyi.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,576 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>spinstats.models &#8212; spin-statistics  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nature.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">spin-statistics  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">spinstats.models</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for spinstats.models</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">class</span> <span class="nc">_RateModel</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;base&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_time_resolved</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="mf">2.7e13</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_initial_states</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_A</span> <span class="o">=</span> <span class="mi">4900</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_gamma</span> <span class="o">=</span> <span class="mf">0.845</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_Evib</span> <span class="o">=</span> <span class="mf">0.17</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_kT</span> <span class="o">=</span> <span class="mf">0.025</span>
+        <span class="c1"># couplings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span>
+        
+    <span class="k">def</span> <span class="nf">_check_initial_weighting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">starting_state</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">starting_state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_initial_states</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid state </span><span class="si">{0}</span><span class="s1"> in initial_weighting&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">starting_state</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span><span class="p">[</span><span class="n">starting_state</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;weightings must be positive&#39;</span><span class="p">)</span>
+        <span class="k">return</span>
+            
+    <span class="k">def</span> <span class="nf">_set_initial_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">)</span>
+        <span class="n">total_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">/</span><span class="n">total_weights</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">calculate_internal_conversion_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deltaE</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute an internal conversion rate based on the energy gap law.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        deltaE : float</span>
+<span class="sd">            Energy gap between the initial and final state. Positive if the final state is higher in energy.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        kIC : float</span>
+<span class="sd">            Internal conversion rate in unts of per ns.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">deltaE</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">kIC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_A</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">deltaE</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_kT</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kIC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_A</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">deltaE</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_gamma</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gaplaw_Evib</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kIC</span>
+    
+    <span class="k">def</span> <span class="nf">set_spinhamiltonian_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spinhamiltonian</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Import calculated overlaps from the spin Hamiltonian</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        spinhamiltonian : spinstats.SpinHamiltonian</span>
+<span class="sd">            Instance of :class:`spinstats.SpinHamiltonian`, with parameters already computed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cs</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">cslsq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_ctlsq_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_ctlsq_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_ctlsq_z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_a</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_cqlsq_a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_b</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_cqlsq_b</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_x</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_cqlsq_x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_y</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_cqlsq_y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq_z</span> <span class="o">=</span> <span class="n">spinhamiltonian</span><span class="o">.</span><span class="n">_cqlsq_z</span>
+        <span class="k">return</span>
+    
+                
+<div class="viewcode-block" id="Model2"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model2">[docs]</a><span class="k">class</span> <span class="nc">Model2</span><span class="p">(</span><span class="n">_RateModel</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for performing calculations of the spin-statistical factor.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    states : list of str</span>
+<span class="sd">        The names of the excited state species.</span>
+<span class="sd">    rates : list of str</span>
+<span class="sd">        The names of the different rate constants in the model.</span>
+<span class="sd">    model_name : str</span>
+<span class="sd">        The name of the model.</span>
+<span class="sd">    initial_weighting : dict</span>
+<span class="sd">        Dictionary of (str, float) pairs. Key is the state name (str) and value is its initial weight (float).</span>
+<span class="sd">    gaplaw_A : float</span>
+<span class="sd">        Energy gap law prefactor in unts of per ns.</span>
+<span class="sd">    gaplaw_gamma : float</span>
+<span class="sd">        Material dependent gamma factor from the energy gap law.</span>
+<span class="sd">    gaplaw_Evib : float</span>
+<span class="sd">        Vibrational energy to use in the energy gap law in units of eV.</span>
+<span class="sd">    gaplaw_kT : float</span>
+<span class="sd">        Thermal energy for internal conversion calculations in units of eV.</span>
+<span class="sd">    G : float</span>
+<span class="sd">        The exciton generation rate for :attr:`initial_state`. Units of per volume per time.</span>
+<span class="sd">    kD : float</span>
+<span class="sd">        Rate of triplet-pair dissociation into free triplets. Units of per ns.</span>
+<span class="sd">    kTTA : float</span>
+<span class="sd">        (Arbitrary) effective linear rate of triplet-triplet annihilation . UNits of per ns.</span>
+<span class="sd">    kIC1 : float</span>
+<span class="sd">        Rate of internal conversion from :math:`^3(TT)` to :math:`T_1`. Units of per ns.</span>
+<span class="sd">    kIC2 : float</span>
+<span class="sd">        Rate of internal conversion from :math:`^3(TT)` to :math:`T_2`. Units of per ns.</span>
+<span class="sd">    kIC21 : float</span>
+<span class="sd">        Rate of internal conversion from :math:`T_2` to :math:`T_1`. Units of per ns.</span>
+<span class="sd">    kRISC : float</span>
+<span class="sd">        Rate of high-level intersystem crossing from :math:`T_2` to :math:`S_1`. Units of per ns.</span>
+<span class="sd">    kTF : float</span>
+<span class="sd">        Rate of triplet-pair fusion from weakly exchange-coupled to strongly exchange-coupled. Units of per ns.</span>
+<span class="sd">    kTS : float</span>
+<span class="sd">        Rate of triplet-pair separation from strongly exchange-coupled to weakly exchange-coupled. Units of per ns.</span>
+<span class="sd">    kSF : float</span>
+<span class="sd">        Rate of singlet fission from :math:`S_1` to :math:`^1(TT)`. Units of per ns.</span>
+<span class="sd">    k_SF : float</span>
+<span class="sd">        Rate of triplet-pair fusion from :math:`^1(TT)` to :math`S_1`. Units of per ns.</span>
+<span class="sd">    kS : float</span>
+<span class="sd">        Radiative rate of the :math:`S_1` state. Units of per ns.</span>
+<span class="sd">    kT : float</span>
+<span class="sd">        Nonradiative rate of the :math:`T_1` state. Should be set to zero for true calculations of spin statistics. Units of per ns.</span>
+<span class="sd">    cs : numpy.ndarray</span>
+<span class="sd">        1D array containing the overlap factors between the 9 :math:`(T..T)` states and :math:`^1(TT)`.</span>
+<span class="sd">    ct_m : numpy.ndarray</span>
+<span class="sd">        1D array containing the overlap factors between the 9 :math:`(T..T)` states and :math:`^3(TT)_m`, where m is x, y or z.</span>
+<span class="sd">    cq_m : numpy.ndarray</span>
+<span class="sd">        1D array containing the overlap factors between the 9 :math:`(T..T)` states and :math:`^5(TT)_m`, where m is a, b, x, y or z.</span>
+<span class="sd">    simulation_results : dict</span>
+<span class="sd">        Produced by :meth:`simulate`. Keys are the excited-state names (str), values are the simulated populations (float).</span>
+<span class="sd">    plqy : float</span>
+<span class="sd">        Calculated photoluminescence quantum yield from :meth:`calculate_plqy`.</span>
+<span class="sd">    ucqy : float</span>
+<span class="sd">        Calculated upconversion quantum yield from :meth:`calculate_ucqy`.</span>
+<span class="sd">    eta : float</span>
+<span class="sd">        Calculated spin-statistical factor from :meth:`calculate_eta`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;Model 2&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span> <span class="o">=</span> <span class="mi">21</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rates</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kD&#39;</span><span class="p">,</span> <span class="s1">&#39;kTTA&#39;</span><span class="p">,</span> <span class="s1">&#39;kIC1&#39;</span><span class="p">,</span> <span class="s1">&#39;kIC2&#39;</span><span class="p">,</span> <span class="s1">&#39;kIC21&#39;</span><span class="p">,</span> <span class="s1">&#39;kRISC&#39;</span><span class="p">,</span> <span class="s1">&#39;kT&#39;</span><span class="p">,</span> <span class="s1">&#39;kTF&#39;</span><span class="p">,</span> <span class="s1">&#39;kTS&#39;</span><span class="p">,</span> <span class="s1">&#39;kSF&#39;</span><span class="p">,</span> <span class="s1">&#39;k_SF&#39;</span><span class="p">,</span> <span class="s1">&#39;kS&#39;</span><span class="p">]</span>
+        <span class="c1"># rates between excited states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kD</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kTTA</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kIC1</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kIC2</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kIC21</span> <span class="o">=</span> <span class="mi">15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kRISC</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kTF</span> <span class="o">=</span> <span class="mi">10</span><span class="o">/</span><span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kTS</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kSF</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_SF</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="c1"># rates of decay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kS</span> <span class="o">=</span> <span class="mf">0.0625</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kT</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># initial stuff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_initial_states</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        
+    <span class="k">def</span> <span class="nf">_generate_rate_equation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_z</span><span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">))</span>
+        <span class="c1"># T1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kTTA</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kD</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span><span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kIC1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kIC21</span>
+        <span class="c1"># TT_l</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kD</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kTF</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_z</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">9</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kTTA</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cq</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ct</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># 5TT</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">m</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">kTS</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cq</span><span class="p">[</span><span class="n">m</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">m</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTF</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cq</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># 3TT</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">m</span><span class="o">+</span><span class="mi">15</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kTS</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ct</span><span class="p">[</span><span class="n">m</span><span class="p">])</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">m</span><span class="o">+</span><span class="mi">15</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTF</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ct</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># 1TT</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kTS</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">)</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">k_SF</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTF</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kSF</span>
+        <span class="c1"># S1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kS</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kSF</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_SF</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kRISC</span>
+        <span class="c1"># T2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC21</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kRISC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span><span class="mi">18</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kIC2</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">_generate_generation_rate_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_GS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_GT</span>
+        <span class="k">return</span>
+            
+<div class="viewcode-block" id="Model2.simulate"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model2.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the excited state populations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_generation_rates</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_generation_rate_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_rate_equation_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_simulation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_simulation_results</span><span class="p">()</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="Model2.calculate_plqy"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model2.calculate_plqy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_plqy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the photoluminescence quantum yield.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plqy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span>
+        <span class="k">return</span></div>
+        
+<div class="viewcode-block" id="Model2.calculate_ucqy"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model2.calculate_ucqy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ucqy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the upconversion quantum yield.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ucqy</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="Model2.calculate_eta"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model2.calculate_eta">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_eta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the spin-statistical factor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_plqy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ucqy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ucqy</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">plqy</span>
+        <span class="k">return</span></div>
+    
+    <span class="k">def</span> <span class="nf">_unpack_simulation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">_set_generation_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_initial_weighting</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_initial_condition</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_GS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_GT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]]</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">_wrap_simulation_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_results</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">]))</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="Model1"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model1">[docs]</a><span class="k">class</span> <span class="nc">Model1</span><span class="p">(</span><span class="n">_RateModel</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class for performing calculations of the spin-statistical factor.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    states : list of str</span>
+<span class="sd">        The names of the excited state species.</span>
+<span class="sd">    rates : list of str</span>
+<span class="sd">        The names of the different rate constants in the model.</span>
+<span class="sd">    model_name : str</span>
+<span class="sd">        The name of the model.</span>
+<span class="sd">    initial_weighting : dict</span>
+<span class="sd">        Dictionary of (str, float) pairs. Key is the state name (str) and value is its initial weight (float).</span>
+<span class="sd">    gaplaw_A : float</span>
+<span class="sd">        Energy gap law prefactor in unts of per ns.</span>
+<span class="sd">    gaplaw_gamma : float</span>
+<span class="sd">        Material dependent gamma factor from the energy gap law.</span>
+<span class="sd">    gaplaw_Evib : float</span>
+<span class="sd">        Vibrational energy to use in the energy gap law in units of eV.</span>
+<span class="sd">    gaplaw_kT : float</span>
+<span class="sd">        Thermal energy for internal conversion calculations in units of eV.</span>
+<span class="sd">    G : float</span>
+<span class="sd">        The exciton generation rate for :attr:`initial_state`. Units of per volume per time.</span>
+<span class="sd">    kD : float</span>
+<span class="sd">        Rate of triplet-pair dissociation into free triplets. Units of per ns.</span>
+<span class="sd">    kTTA : float</span>
+<span class="sd">        (Arbitrary) effective linear rate of triplet-triplet annihilation . UNits of per ns.</span>
+<span class="sd">    kIC1 : float</span>
+<span class="sd">        Rate of internal conversion from :math:`^3(TT)` to :math:`T_1`. Units of per ns.</span>
+<span class="sd">    kIC2 : float</span>
+<span class="sd">        Rate of internal conversion from :math:`^3(TT)` to :math:`T_2`. Units of per ns.</span>
+<span class="sd">    kIC21 : float</span>
+<span class="sd">        Rate of internal conversion from :math:`T_2` to :math:`T_1`. Units of per ns.</span>
+<span class="sd">    kRISC : float</span>
+<span class="sd">        Rate of high-level intersystem crossing from :math:`T_2` to :math:`S_1`. Units of per ns.</span>
+<span class="sd">    kTF : float</span>
+<span class="sd">        Rate of triplet-pair fusion to form :math:`S_1`. Units of per ns.</span>
+<span class="sd">    kSF : float</span>
+<span class="sd">        Rate of singlet fission from :math:`S_1` to triplet-pair states. Units of per ns.</span>
+<span class="sd">    kS : float</span>
+<span class="sd">        Radiative rate of the :math:`S_1` state. Units of per ns.</span>
+<span class="sd">    kT : float</span>
+<span class="sd">        Nonradiative rate of the :math:`T_1` state. Should be set to zero for true calculations of spin statistics. Units of per ns.</span>
+<span class="sd">    cs : numpy.ndarray</span>
+<span class="sd">        1D array containing the overlap factors between the 9 :math:`(T..T)` states and :math:`^1(TT)`.</span>
+<span class="sd">    ct_m : numpy.ndarray</span>
+<span class="sd">        1D array containing the overlap factors between the 9 :math:`(T..T)` states and :math:`^3(TT)_m`, where m is x, y or z.</span>
+<span class="sd">    cq_m : numpy.ndarray</span>
+<span class="sd">        1D array containing the overlap factors between the 9 :math:`(T..T)` states and :math:`^5(TT)_m`, where m is a, b, x, y or z.</span>
+<span class="sd">    simulation_results : dict</span>
+<span class="sd">        Produced by :meth:`simulate`. Keys are the excited-state names (str), values are the simulated populations (float).</span>
+<span class="sd">    plqy : float</span>
+<span class="sd">        Calculated photoluminescence quantum yield from :meth:`calculate_plqy`.</span>
+<span class="sd">    ucqy : float</span>
+<span class="sd">        Calculated upconversion quantum yield from :meth:`calculate_ucqy`.</span>
+<span class="sd">    eta : float</span>
+<span class="sd">        Calculated spin-statistical factor from :meth:`calculate_eta`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;Model 1&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rates</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;kD&#39;</span><span class="p">,</span> <span class="s1">&#39;kTTA&#39;</span><span class="p">,</span> <span class="s1">&#39;kIC1&#39;</span><span class="p">,</span> <span class="s1">&#39;kIC2&#39;</span><span class="p">,</span> <span class="s1">&#39;kIC21&#39;</span><span class="p">,</span> <span class="s1">&#39;kRISC&#39;</span><span class="p">,</span> <span class="s1">&#39;kT&#39;</span><span class="p">,</span> <span class="s1">&#39;kTF&#39;</span><span class="p">,</span> <span class="s1">&#39;kSF&#39;</span><span class="p">,</span> <span class="s1">&#39;kS&#39;</span><span class="p">]</span>
+        <span class="c1"># rates between excited states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kD</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kTTA</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kIC1</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kIC2</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kIC21</span> <span class="o">=</span> <span class="mi">15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kRISC</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kTF</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kSF</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="c1"># rates of decay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kS</span> <span class="o">=</span> <span class="mf">0.0625</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kT</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># initial stuff</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_initial_states</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        
+    <span class="k">def</span> <span class="nf">_generate_rate_equation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ct</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cq</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">cq_a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cq_z</span><span class="p">]</span>
+        <span class="c1">#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">))</span>
+        <span class="c1"># T1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kTTA</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kT</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kIC21</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kD</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC1</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="c1"># TT_l</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kD</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kTF</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">9</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kTTA</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kSF</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># S1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kS</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kSF</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kRISC</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kTF</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># T2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kIC21</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">kRISC</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kIC2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ct_z</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">_generate_generation_rate_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_number_of_states</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_GS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_GT</span>
+        <span class="k">return</span>
+            
+<div class="viewcode-block" id="Model1.simulate"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model1.simulate">[docs]</a>    <span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the excited state populations.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_generation_rates</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_generation_rate_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_rate_equation_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rem</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_simulation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_simulation_results</span><span class="p">()</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="Model1.calculate_plqy"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model1.calculate_plqy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_plqy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the photoluminscence quantum yield.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plqy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span>
+        <span class="k">return</span></div>
+        
+<div class="viewcode-block" id="Model1.calculate_ucqy"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model1.calculate_ucqy">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_ucqy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the upconversion quantum yield.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_weighting</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ucqy</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kS</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span>
+        <span class="k">return</span></div>
+    
+<div class="viewcode-block" id="Model1.calculate_eta"><a class="viewcode-back" href="../../_pages/models.html#spinstats.models.Model1.calculate_eta">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_eta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the spin-statistical factor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_plqy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calculate_ucqy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ucqy</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">plqy</span>
+        <span class="k">return</span></div>
+    
+    <span class="k">def</span> <span class="nf">_unpack_simulation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sol</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">_set_generation_rates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_initial_weighting</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_initial_condition</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_GS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_GT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y0</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_initial_state_mapping</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]]</span>
+        <span class="k">return</span>
+    
+    <span class="k">def</span> <span class="nf">_wrap_simulation_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">simulation_results</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">]))</span>
+        <span class="k">return</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">spin-statistics  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">spinstats.models</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, David Bossanyi.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.1.
+    </div>
+  </body>
+</html>
