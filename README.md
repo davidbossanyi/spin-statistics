@@ -33,14 +33,19 @@ which requires you to have [sphinx](https://www.sphinx-doc.org/en/master/) insta
 The code can also be accessed through the jupyter notebook contained in the notebooks folder. You can interact with the code directly by launching the notebook in binder using the badge at the top of this page.
 
 ## graphical user interface
-If writing and editing code is not for you, there is also a graphical user interface (GUI) that you can use to explore the effects of various parameters on the value of &eta;. To use the GUI you will need a python installation on your machine, as well as a few packages. For example, with [Miniconda](https://docs.conda.io/en/latest/miniconda.html), you would need
-```sh
-conda install numpy pyqt pyqtgraph pandas scipy
-```
-Note that numpy, scipy and pandas are installed alongside spinstats if you decide to install it as a package on your local machine.
-
-To launch the GUI, in a command prompt that recognises `python` as a command (for example the anaconda prompt), enter
-```sh
+If writing and editing code is not for you, there is also a graphical user interface (GUI) that you can use to explore the effects of various parameters on the value of &eta;. To use the GUI you will need a python installation on your machine, as well as a few packages. The best way to achieve this is by installing [Miniconda](https://docs.conda.io/en/latest/miniconda.html), then using a virtual environment. In a command prompt or terminal that recognises `conda` and `python` as commands (e.g. the anaconda prompt), you would navigate to the GUI folder
+```commandline
 cd GUI
+```
+and install the virtual environment:
+```commandline
+conda env create -f environment.yml
+```
+next, activate the environment:
+```commandline
+conda activate spin-stats-gui
+```
+and launch the application:
+```commandline
 python run.py
 ```
