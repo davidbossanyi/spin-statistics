@@ -4,9 +4,9 @@ Calculations of spin-statistical factors for triplet-triplet annihilation upconv
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/davidbossanyi/spin-statistics/0b72942209d8d2a895c619287da9095e50f39c33)
 
 ## about
-The spin-statistical factor &eta; for triplet-triplet annihilation upconversion gives the probability that an annihilation event between two triplet excitons will result in a singlet exciton. The value &eta; depends in a non-trivial way on a lot of different parameters. For the full story, please refer to [our paper recently uploaded to ChemRxiv](https://chemrxiv.org/engage/chemrxiv/article-details/60dae5946bdaa41e623d4a33). This repository contains code that allows you to perform calculations of &eta;.
+The spin-statistical factor &eta; for triplet-triplet annihilation upconversion gives the probability that an annihilation event between two triplet excitons will result in a singlet exciton. The value &eta; depends in a non-trivial way on a lot of different parameters. For the full story, please refer to [our paper recently published open access in JACS Au](https://pubs.acs.org/doi/10.1021/jacsau.1c00322). This repository contains code that allows you to perform calculations of &eta;.
 
-If you use any of the code contained in this repository, please cite our paper [Spin statistics for triplet-triplet annihilation upconversion: exchange coupling, intermolecular orientation and reverse intersystem crossing](https://chemrxiv.org/engage/chemrxiv/article-details/60dae5946bdaa41e623d4a33) by Bossanyi et al., recently uploaded to ChemRxiv.
+If you use any of the code contained in this repository, please cite our paper [Spin statistics for triplet-triplet annihilation upconversion: exchange coupling, intermolecular orientation and reverse intersystem crossing](https://pubs.acs.org/doi/10.1021/jacsau.1c00322) by Bossanyi et al., recently published open access in JACS Au.
 
 ## spinstats package
 #### installation
